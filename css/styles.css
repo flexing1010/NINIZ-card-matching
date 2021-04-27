@@ -1,0 +1,68 @@
+@import "reset.css";
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+.game-screen {
+  width: 90%;
+  height: 95%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+header {
+  width: 15%;
+  height: 90%;
+}
+button {
+  font-size: 30px;
+}
+
+.header__container {
+  margin-top: 50px;
+  font-size: 30px;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  align-items: center;
+  width: 45%;
+  height: 80%;
+  grid-gap: 1px;
+  margin-right: 5px;
+
+  border-right: 2px solid black;
+}
+
+.leaderboard {
+  width: 15%;
+  height: 80%;
+}
+
+.row {
+  width: 20%;
+  height: 80%;
+}
+
+.row__second {
+  margin: 0 20px;
+}
+
+.card {
+  background-color: cadetblue;
+  width: 90%;
+  height: 90%;
+  margin: 10px;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+}
