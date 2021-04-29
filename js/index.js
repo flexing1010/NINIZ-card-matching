@@ -2,6 +2,10 @@ const btn = document.querySelector("button");
 const gameBoard = document.querySelector("#jsGameboard");
 
 imgArr = [];
+let first = false;
+let firstCard = "";
+let secondCard = "";
+let openedCards = [];
 
 //DRY(don't repeat yourself)version of the code
 function imgArray() {
@@ -42,13 +46,35 @@ function imgArray() {
 // imgArr[8] = new Image();
 // imgArr[8].src = `img/9.png`;
 
-const firstPick = () => {};
+const cardOpen = (selected) => {
+  openedCards.push(selected);
+  let length = openedCards.length;
 
-const secondPick = (firstCard) => {};
+  if (length === 2) {
+    if (openedCards[0].firstChild.type === openedCards[1].firstChild.type) {
+      console.log(openedCards);
+      console.log("its a match");
+      openedCards = [];
+    } else {
+      setTimeout(() => {
+        console.log("no match");
+        openedCards[0].firstChild.classList.remove("show");
+        openedCards[1].firstChild.classList.remove("show");
+        openedCards[0].classList.remove("disabled");
+        openedCards[1].classList.remove("disabled");
+
+        openedCards = [];
+      }, 2000);
+    }
+  }
+};
 
 const pickCard = (e) => {
-  //if(e.target.id === 1 && )
-  console.log(e.target.classList.value);
+  let card = e.target;
+  cardOpen(card);
+
+  e.target.firstChild.classList.toggle("show");
+  e.target.classList.toggle("disabled");
 };
 
 const randomizeImg = () => {
@@ -58,23 +84,23 @@ const randomizeImg = () => {
   randomImg = imgArr.sort(() => Math.random() - 0.5);
   randomImg.forEach((img) => {
     const name = img.src.slice(26, 27);
+
     const div = document.createElement("div");
     div.classList.add("card");
 
     if (name === "1" || name === "2") {
-      img.classList.add("1");
+      img.type = 1;
     } else if (name === "3" || name === "4") {
-      img.classList.add("2");
+      img.type = 2;
     } else if (name === "5" || name === "6") {
-      img.classList.add("3");
+      img.type = 3;
     } else if (name === "7" || name === "8") {
-      img.classList.add("4");
+      img.type = 4;
     } else {
-      img.classList.add("5");
+      img.type = 5;
     }
 
     div.addEventListener("click", pickCard);
-
     div.appendChild(img);
     gameBoard.appendChild(div);
   });
