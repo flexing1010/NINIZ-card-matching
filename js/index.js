@@ -1,11 +1,15 @@
 const btn = document.querySelector("button");
 const gameBoard = document.querySelector("#jsGameboard");
+const deckOfCard = document.getElementsByTagName("img");
+const attempts = document.getElementById("jsAttemtsCounter");
 
 imgArr = [];
 let first = false;
 let firstCard = "";
 let secondCard = "";
 let openedCards = [];
+let matchedPair = "";
+let attempt = 1;
 
 //DRY(don't repeat yourself)version of the code
 function imgArray() {
@@ -17,64 +21,58 @@ function imgArray() {
   }
 }
 
-// let imgArr = new Array();
-
-// imgArr[0] = new Image();
-// imgArr[0].src = `img/1.png`;
-
-// imgArr[1] = new Image();
-// imgArr[1].src = `img/2.png`;
-
-// imgArr[2] = new Image();
-// imgArr[2].src = `img/3.png`;
-
-// imgArr[3] = new Image();
-// imgArr[3].src = `img/4.png`;
-
-// imgArr[4] = new Image();
-// imgArr[4].src = `img/5.png`;
-
-// imgArr[5] = new Image();
-// imgArr[5].src = `img/6.png`;
-
-// imgArr[6] = new Image();
-// imgArr[6].src = `img/7.png`;
-
-// imgArr[7] = new Image();
-// imgArr[7].src = `img/8.png`;
-
-// imgArr[8] = new Image();
-// imgArr[8].src = `img/9.png`;
-
 const cardOpen = (selected) => {
   openedCards.push(selected);
   let length = openedCards.length;
 
   if (length === 2) {
+    attempts.innerText = `Attempts:${attempt++}`;
     if (openedCards[0].firstChild.type === openedCards[1].firstChild.type) {
-      console.log(openedCards);
       console.log("its a match");
       openedCards = [];
+      matchedPair++;
+      finishGame(matchedPair);
     } else {
+      disableUnpickedCards();
       setTimeout(() => {
         console.log("no match");
-        openedCards[0].firstChild.classList.remove("show");
-        openedCards[1].firstChild.classList.remove("show");
-        openedCards[0].classList.remove("disabled");
-        openedCards[1].classList.remove("disabled");
-
+        openedCards.forEach((cardImg) =>
+          cardImg.firstChild.classList.remove("show")
+        );
+        openedCards.forEach((cardImg) => cardImg.classList.remove("disabled"));
+        // openedCards[0].firstChild.classList.remove("show");
+        // openedCards[1].firstChild.classList.remove("show");
+        // openedCards[0].classList.remove("disabled");
+        // openedCards[1].classList.remove("disabled");
+        enableCards();
         openedCards = [];
-      }, 2000);
+      }, 1000);
     }
   }
 };
 
 const pickCard = (e) => {
   let card = e.target;
+
   cardOpen(card);
 
   e.target.firstChild.classList.toggle("show");
   e.target.classList.toggle("disabled");
+};
+
+const disableUnpickedCards = () => {
+  const unpickedCard = Array.from(deckOfCard).filter(
+    (card) => card.classList.value == ""
+  );
+  unpickedCard.forEach((unpicked) =>
+    unpicked.parentNode.classList.add("disabled")
+  );
+};
+
+const enableCards = () => {
+  Array.from(deckOfCard).forEach((card) =>
+    card.parentNode.classList.remove("disabled")
+  );
 };
 
 const randomizeImg = () => {
@@ -83,18 +81,19 @@ const randomizeImg = () => {
   // gives equal probability to be negative or positive[-.5,.5]
   randomImg = imgArr.sort(() => Math.random() - 0.5);
   randomImg.forEach((img) => {
-    const name = img.src.slice(26, 27);
+    // const name = img.src.slice(26, 27);
+    const name = img.src.match(/\d.png$/)[0];
 
     const div = document.createElement("div");
     div.classList.add("card");
 
-    if (name === "1" || name === "2") {
+    if (name === "1.png" || name === "2.png") {
       img.type = 1;
-    } else if (name === "3" || name === "4") {
+    } else if (name === "3.png" || name === "4.png") {
       img.type = 2;
-    } else if (name === "5" || name === "6") {
+    } else if (name === "5.png" || name === "6.png") {
       img.type = 3;
-    } else if (name === "7" || name === "8") {
+    } else if (name === "7.png" || name === "8.png") {
       img.type = 4;
     } else {
       img.type = 5;
@@ -106,13 +105,25 @@ const randomizeImg = () => {
   });
 };
 
-const handleClick = (e) => {
+const finishGame = (pairs) => {
+  if (pairs === 4) alert("congraturations!");
+};
+
+const restart = () => {
+  Array.from(deckOfCard).forEach((card) => {
+    card.classList.value = "";
+    card.parentNode.classList.value = "";
+    openedCards = [];
+    attempt = 1;
+    attempts.innerText = `Attempts:0`;
+  });
   randomizeImg();
 };
 
 function init() {
   imgArray();
-  btn.addEventListener("click", handleClick);
+  console.log(matchedPair);
+  btn.addEventListener("click", restart);
 }
 
 init();
