@@ -9,10 +9,21 @@
   </head>
   <body>
     <h1>Niniz Card Matching Game!</h1>
+    <div id="jsFormContainer">
+      <form id="jsForm">
+        <input
+          id="jsInputName"
+          type="text"
+          placeholder="Enter Your Name"
+          name="playerName"
+        />
+        <button id="jsEnterName" type="submit">Enter</button>
+      </form>
+    </div>
     <main class="game-screen">
       <header>
         <div class="header__container">
-          <button>Start!</button>
+          <button id="jsStart">Start!</button>
           <div id="jsAttemtsCounter">Attempts:</div>
         </div>
       </header>
@@ -27,7 +38,7 @@
       </div>
       <div class="leaderboard">
         <h2>Leaderboard</h2>
-        <ol></ol>
+        <ol id="jsRank"></ol>
       </div>
     </main>
 

@@ -1,7 +1,14 @@
-const btn = document.querySelector("button");
+const startButton = document.querySelector("#jsStart");
 const gameBoard = document.querySelector("#jsGameboard");
 const deckOfCard = document.getElementsByTagName("img");
 const attempts = document.getElementById("jsAttemtsCounter");
+const formContainer = document.getElementById("jsFormContainer");
+const form = document.querySelector("#jsForm");
+const NameButton = document.querySelector("#EnterName");
+const inputName = document.querySelector("#jsInputName");
+const ranking = document.querySelector("#jsRank");
+
+const PLAYERINFO_LS = "playerInfo";
 
 imgArr = [];
 let first = false;
@@ -10,6 +17,8 @@ let secondCard = "";
 let openedCards = [];
 let matchedPair = "";
 let attempt = 1;
+let playerInfo = [];
+let name = "";
 
 //DRY(don't repeat yourself)version of the code
 function imgArray() {
@@ -55,7 +64,6 @@ const pickCard = (e) => {
   let card = e.target;
 
   cardOpen(card);
-
   e.target.firstChild.classList.toggle("show");
   e.target.classList.toggle("disabled");
 };
@@ -106,10 +114,38 @@ const randomizeImg = () => {
 };
 
 const finishGame = (pairs) => {
-  if (pairs === 4) alert("congraturations!");
+  if (pairs === 4) {
+    alert("congraturations!");
+    const playerInfoObj = {
+      playerName,
+      value: attempt - 1,
+    };
+    playerInfo.push(playerInfoObj);
+    savePlayerInfo();
+    postLeaderBoard();
+  }
+};
+
+const savePlayerInfo = () => {
+  localStorage.setItem(PLAYERINFO_LS, JSON.stringify(playerInfo));
+};
+
+const postLeaderBoard = () => {
+  const loadedRankings = localStorage.getItem(PLAYERINFO_LS);
+  const li = document.createElement("li");
+  if (loadedRankings != null) {
+    const parsedLoadedRankings = JSON.parse(loadedRankings);
+    parsedLoadedRankings.forEach((rank) => {
+      li.classList.add(rank.value);
+      li.innerText = `${rank.playerName}  Attempts:${rank.value}`;
+      ranking.appendChild(li);
+      playerInfo.push(rank);
+    });
+  }
 };
 
 const restart = () => {
+  console.log(playerInfo, "!");
   Array.from(deckOfCard).forEach((card) => {
     card.classList.value = "";
     card.parentNode.classList.value = "";
@@ -118,12 +154,28 @@ const restart = () => {
     attempts.innerText = `Attempts:0`;
   });
   randomizeImg();
+  matchedPair = 0;
+  console.log(playerInfo);
+};
+
+const getPlayerName = (e) => {
+  e.preventDefault();
+  playerName = e.target.playerName.value;
+  greetPlayer(playerName);
+};
+
+const greetPlayer = (playerName) => {
+  form.remove();
+  const span = document.createElement("span");
+  span.innerText = `Hello ${playerName} let's play the game!`;
+  formContainer.appendChild(span);
 };
 
 function init() {
   imgArray();
-  console.log(matchedPair);
-  btn.addEventListener("click", restart);
+  startButton.addEventListener("click", restart);
+  form.addEventListener("submit", getPlayerName);
+  postLeaderBoard();
 }
 
 init();
