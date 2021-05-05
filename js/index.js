@@ -8,6 +8,8 @@ const NameButton = document.querySelector("#EnterName");
 const inputName = document.querySelector("#jsInputName");
 const ranking = document.querySelector("#jsRank");
 
+const leaderBoardList = document.getElementsByTagName("li");
+
 const PLAYERINFO_LS = "playerInfo";
 
 imgArr = [];
@@ -121,31 +123,54 @@ const finishGame = (pairs) => {
       value: attempt - 1,
     };
     playerInfo.push(playerInfoObj);
+    postEndResult(playerInfoObj);
     savePlayerInfo();
-    postLeaderBoard();
   }
 };
 
-const savePlayerInfo = () => {
-  localStorage.setItem(PLAYERINFO_LS, JSON.stringify(playerInfo));
+// leaderboard Functions //
+const postEndResult = (endResult) => {
+  const li = document.createElement("li");
+  li.classList.add(endResult.value);
+  li.innerText = `${endResult.playerName}  Attempts:${endResult.value}`;
+  ranking.appendChild(li);
 };
 
 const postLeaderBoard = () => {
   const loadedRankings = localStorage.getItem(PLAYERINFO_LS);
-  const li = document.createElement("li");
   if (loadedRankings != null) {
     const parsedLoadedRankings = JSON.parse(loadedRankings);
     parsedLoadedRankings.forEach((rank) => {
+      const li = document.createElement("li");
       li.classList.add(rank.value);
       li.innerText = `${rank.playerName}  Attempts:${rank.value}`;
       ranking.appendChild(li);
-      playerInfo.push(rank);
     });
   }
 };
 
+const sortLeaderboard = () => {
+  let sortedList = Array.from(leaderBoardList).sort();
+  console.log(sortedList);
+};
+// leaderboard Functions //
+
+// save && load functions //
+const savePlayerInfo = () => {
+  localStorage.setItem(PLAYERINFO_LS, JSON.stringify(playerInfo));
+};
+
+const loadPlayerInfo = () => {
+  const loadedInfo = localStorage.getItem(PLAYERINFO_LS);
+  const parsedLoadedInfo = JSON.parse(loadedInfo);
+  parsedLoadedInfo.forEach((info) => {
+    playerInfo.push(info);
+  });
+};
+// save && load functions //
+
 const restart = () => {
-  console.log(playerInfo, "!");
+  console.log(leaderBoardList);
   Array.from(deckOfCard).forEach((card) => {
     card.classList.value = "";
     card.parentNode.classList.value = "";
@@ -155,7 +180,6 @@ const restart = () => {
   });
   randomizeImg();
   matchedPair = 0;
-  console.log(playerInfo);
 };
 
 const getPlayerName = (e) => {
@@ -176,6 +200,8 @@ function init() {
   startButton.addEventListener("click", restart);
   form.addEventListener("submit", getPlayerName);
   postLeaderBoard();
+  loadPlayerInfo();
+  sortLeaderboard();
 }
 
 init();
