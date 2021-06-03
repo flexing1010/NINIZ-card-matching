@@ -21,6 +21,7 @@ let matchedPair = "";
 let attempt = 1;
 let playerInfo = [];
 let name = "";
+let tempList;
 
 //DRY(don't repeat yourself)version of the code
 function imgArray() {
@@ -123,17 +124,39 @@ const finishGame = (pairs) => {
       value: attempt - 1,
     };
     playerInfo.push(playerInfoObj);
-    postEndResult(playerInfoObj);
+    ranking.innerHTML = "";
+    sortLeaderboard();
     savePlayerInfo();
+    console.log(playerInfo);
   }
 };
 
-// leaderboard Functions //
-const postEndResult = (endResult) => {
-  const li = document.createElement("li");
-  li.classList.add(endResult.value);
-  li.innerText = `${endResult.playerName}  Attempts:${endResult.value}`;
-  ranking.appendChild(li);
+/*----------------------
+leaderboard Functions 
+----------------------*/
+const sortLeaderboard = () => {
+  const sortedRank = playerInfo.sort(
+    (first, second) => first.value - second.value
+  );
+  console.log(sortedRank);
+  tempList = sortedRank;
+  postEndResult(tempList);
+};
+
+const postEndResult = (sortedRank) => {
+  sortedRank.forEach((item) => {
+    const li = document.createElement("li");
+    li.innerText = `${item.playerName}:  Attempts:${item.value}`;
+    ranking.appendChild(li);
+  });
+
+  // const li = document.createElement("li");
+  // li.dataset.attempts = parseInt(endResult.value);
+  // li.innerText = `${endResult.playerName}  Attempts:${endResult.value}`;
+
+  // ranking.appendChild(li);
+
+  // console.log(playerInfo[0].value);
 };
 
 const postLeaderBoard = () => {
@@ -142,17 +165,14 @@ const postLeaderBoard = () => {
     const parsedLoadedRankings = JSON.parse(loadedRankings);
     parsedLoadedRankings.forEach((rank) => {
       const li = document.createElement("li");
-      li.classList.add(rank.value);
+      li.dataset.attempts = parseInt(rank.value);
+      // li.classList.add(rank.value);
       li.innerText = `${rank.playerName}  Attempts:${rank.value}`;
       ranking.appendChild(li);
     });
   }
 };
 
-const sortLeaderboard = () => {
-  let sortedList = Array.from(leaderBoardList).sort();
-  console.log(sortedList);
-};
 // leaderboard Functions //
 
 // save && load functions //
@@ -170,7 +190,6 @@ const loadPlayerInfo = () => {
 // save && load functions //
 
 const restart = () => {
-  console.log(leaderBoardList);
   Array.from(deckOfCard).forEach((card) => {
     card.classList.value = "";
     card.parentNode.classList.value = "";
@@ -201,7 +220,6 @@ function init() {
   form.addEventListener("submit", getPlayerName);
   postLeaderBoard();
   loadPlayerInfo();
-  sortLeaderboard();
 }
 
 init();
