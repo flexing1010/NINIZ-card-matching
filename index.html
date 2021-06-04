@@ -7,41 +7,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
+
   <body>
     <h1>Niniz Card Matching Game!</h1>
-    <div id="jsFormContainer">
-      <form id="jsForm">
-        <input
-          id="jsInputName"
-          type="text"
-          placeholder="Enter Your Name"
-          name="playerName"
-        />
-        <button id="jsEnterName" type="submit">Enter</button>
-      </form>
-    </div>
-    <main class="game-screen">
+    <div class="main-screen">
       <header>
-        <div class="header__container">
-          <button id="jsStart">Start!</button>
-          <div id="jsAttemtsCounter">Attempts:</div>
+        <div id="jsFormContainer">
+          <form id="jsForm">
+            <input
+              id="jsInputName"
+              type="text"
+              placeholder="Enter Your Name"
+              name="playerName"
+            />
+            <button id="jsEnterName" type="submit">Enter</button>
+          </form>
         </div>
+        <div id="jsAttemtsCounter" class="header__score">Attempts:</div>
+        <button id="jsStart" class="header__startBtn">Start!</button>
       </header>
-      <div class="game-board" id="jsGameboard">
-        <!-- <div class="card" id="1">1</div>
+
+      <main class="game-screen">
+        <div class="game-board" id="jsGameboard">
+          <!-- <div class="card" id="1">1</div>
         <div class="card" id="4">4</div>
         <div class="card" id="5">5</div>
         <div class="card" id="6">6</div>
         <div class="card" id="7">7</div>
         <div class="card" id="8">8</div>
         <div class="card" id="9">9</div> -->
-      </div>
-      <div class="leaderboard">
-        <h2>Leaderboard</h2>
-        <ol id="jsRank"></ol>
-      </div>
-    </main>
-
+        </div>
+        <div class="leaderboard">
+          <h2>Leaderboard</h2>
+          <div class="leaderboard__header">
+            <span>Player</span>
+            <span>Score</span>
+          </div>
+          <ol id="jsRank"></ol>
+        </div>
+      </main>
+    </div>
     <script src="js/index.js"></script>
   </body>
 </html>

@@ -8,8 +8,6 @@ const NameButton = document.querySelector("#EnterName");
 const inputName = document.querySelector("#jsInputName");
 const ranking = document.querySelector("#jsRank");
 
-const leaderBoardList = document.getElementsByTagName("li");
-
 const PLAYERINFO_LS = "playerInfo";
 
 imgArr = [];
@@ -20,8 +18,8 @@ let openedCards = [];
 let matchedPair = "";
 let attempt = 1;
 let playerInfo = [];
-let name = "";
-let tempList;
+let imageName = "";
+let playerName = "";
 
 //DRY(don't repeat yourself)version of the code
 function imgArray() {
@@ -92,19 +90,18 @@ const randomizeImg = () => {
   // gives equal probability to be negative or positive[-.5,.5]
   randomImg = imgArr.sort(() => Math.random() - 0.5);
   randomImg.forEach((img) => {
-    // const name = img.src.slice(26, 27);
-    const name = img.src.match(/\d.png$/)[0];
+    const imageName = img.src.match(/\d.png$/)[0];
 
     const div = document.createElement("div");
     div.classList.add("card");
 
-    if (name === "1.png" || name === "2.png") {
+    if (imageName === "1.png" || imageName === "2.png") {
       img.type = 1;
-    } else if (name === "3.png" || name === "4.png") {
+    } else if (imageName === "3.png" || imageName === "4.png") {
       img.type = 2;
-    } else if (name === "5.png" || name === "6.png") {
+    } else if (imageName === "5.png" || imageName === "6.png") {
       img.type = 3;
-    } else if (name === "7.png" || name === "8.png") {
+    } else if (imageName === "7.png" || imageName === "8.png") {
       img.type = 4;
     } else {
       img.type = 5;
@@ -138,9 +135,7 @@ const sortLeaderboard = () => {
   const sortedRank = playerInfo.sort(
     (first, second) => first.value - second.value
   );
-  console.log(sortedRank);
-  tempList = sortedRank;
-  postEndResult(tempList);
+  postEndResult(sortedRank);
 };
 
 const postEndResult = (sortedRank) => {
@@ -149,14 +144,6 @@ const postEndResult = (sortedRank) => {
     li.innerText = `${item.playerName}:  Attempts:${item.value}`;
     ranking.appendChild(li);
   });
-
-  // const li = document.createElement("li");
-  // li.dataset.attempts = parseInt(endResult.value);
-  // li.innerText = `${endResult.playerName}  Attempts:${endResult.value}`;
-
-  // ranking.appendChild(li);
-
-  // console.log(playerInfo[0].value);
 };
 
 const postLeaderBoard = () => {
@@ -165,40 +152,55 @@ const postLeaderBoard = () => {
     const parsedLoadedRankings = JSON.parse(loadedRankings);
     parsedLoadedRankings.forEach((rank) => {
       const li = document.createElement("li");
-      li.dataset.attempts = parseInt(rank.value);
-      // li.classList.add(rank.value);
-      li.innerText = `${rank.playerName}  Attempts:${rank.value}`;
+      const div1 = document.createElement("div");
+      const div2 = document.createElement("div");
+      div1.className = "player__name";
+      div2.className = "player__score";
+      div1.innerText = `${rank.playerName}`;
+      div2.innerText = `Attempts:${rank.value}`;
+      li.appendChild(div1);
+      li.appendChild(div2);
+      // li.innerText = `${rank.playerName}:  Attempts:${rank.value}`;
       ranking.appendChild(li);
     });
   }
 };
-
 // leaderboard Functions //
 
-// save && load functions //
+/*----------------------
+ save && load functions
+----------------------*/
 const savePlayerInfo = () => {
   localStorage.setItem(PLAYERINFO_LS, JSON.stringify(playerInfo));
 };
 
 const loadPlayerInfo = () => {
   const loadedInfo = localStorage.getItem(PLAYERINFO_LS);
-  const parsedLoadedInfo = JSON.parse(loadedInfo);
-  parsedLoadedInfo.forEach((info) => {
-    playerInfo.push(info);
-  });
+  if (!loadedInfo) {
+    return;
+  } else {
+    const parsedLoadedInfo = JSON.parse(loadedInfo);
+    parsedLoadedInfo.forEach((info) => {
+      playerInfo.push(info);
+    });
+  }
 };
 // save && load functions //
 
 const restart = () => {
-  Array.from(deckOfCard).forEach((card) => {
-    card.classList.value = "";
-    card.parentNode.classList.value = "";
-    openedCards = [];
-    attempt = 1;
-    attempts.innerText = `Attempts:0`;
-  });
-  randomizeImg();
-  matchedPair = 0;
+  if (playerName === "") {
+    alert("Pleaser enter your name");
+  } else {
+    Array.from(deckOfCard).forEach((card) => {
+      card.classList.value = "";
+      card.parentNode.classList.value = "";
+      openedCards = [];
+      attempt = 1;
+      attempts.innerText = `Attempts:0`;
+    });
+    randomizeImg();
+    matchedPair = 0;
+  }
 };
 
 const getPlayerName = (e) => {
