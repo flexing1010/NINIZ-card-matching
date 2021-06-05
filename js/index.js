@@ -36,7 +36,7 @@ const cardOpen = (selected) => {
   let length = openedCards.length;
 
   if (length === 2) {
-    attempts.innerText = `Attempts:${attempt++}`;
+    attempts.innerText = `Attempts: ${attempt++}`;
     if (openedCards[0].firstChild.type === openedCards[1].firstChild.type) {
       console.log("its a match");
       openedCards = [];
@@ -141,8 +141,17 @@ const sortLeaderboard = () => {
 const postEndResult = (sortedRank) => {
   sortedRank.forEach((item) => {
     const li = document.createElement("li");
-    li.innerText = `${item.playerName}:  Attempts:${item.value}`;
+    const div1 = document.createElement("div");
+    const div2 = document.createElement("div");
+    div1.className = "player__name";
+    div2.className = "player__score";
+    div1.innerText = `${item.playerName}`;
+    div2.innerText = `Attempts: ${item.value}`;
+    li.appendChild(div1);
+    li.appendChild(div2);
     ranking.appendChild(li);
+    // li.innerText = `${item.playerName}:  Attempts:${item.value}`;
+    // ranking.appendChild(li);
   });
 };
 
@@ -157,7 +166,7 @@ const postLeaderBoard = () => {
       div1.className = "player__name";
       div2.className = "player__score";
       div1.innerText = `${rank.playerName}`;
-      div2.innerText = `Attempts:${rank.value}`;
+      div2.innerText = `Attempts: ${rank.value}`;
       li.appendChild(div1);
       li.appendChild(div2);
       // li.innerText = `${rank.playerName}:  Attempts:${rank.value}`;
