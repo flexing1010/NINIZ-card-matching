@@ -147,7 +147,7 @@ h2 {
    */
   border-radius: 15px;
   cursor: pointer;
-  background-image: url(img/ninizBG.jpg);
+  background-image: url(/NINIZ-card-matching/img/ninizBG.jpg);
   background-size: cover;
 
   /* background-position: -4.9rem -13rem; */
