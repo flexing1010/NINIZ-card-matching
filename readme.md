@@ -1,17 +1,12 @@
-# NINIZ card matching(memory game)
+# 카드매칭 게임
 
-Simple Niniz themed card matching game.
-Purpose of this project was to test my html/css/js skill
+![main screen](https://user-images.githubusercontent.com/79352105/137738685-46543689-6ab5-495f-b5a7-4a310af01976.png)
 
-## Goal features
+### <a href="https://flexing1010.github.io/NINIZ-card-matching/">바로가기</a>
 
-- [x] Basic card matching game functions
-- [x] Ask player name
-- [x] Save player info(name & score) to local storage
-- [x] Save & post result on leaderboard
+자바스크립트 활용 연습용으로 만들어본 카드매칭 게임 입니다.
 
-## When I come back to this project again
+## 기능
 
-- [ ] Refactoring
-- [ ] Update layout
-- [ ] Add a rule menu as a modal
+- 플레이어의 이름과 스코어를 Local Storage에 저장합니다.
+- 저장된 이름과 스코어를 스코어 순으로 리더보드에 표시해 줍니다
